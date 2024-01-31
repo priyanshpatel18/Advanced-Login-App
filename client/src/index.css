@@ -1,0 +1,440 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+html,
+body {
+  min-width: 100%;
+  min-height: 100%;
+  background: url("./assets/BG.png");
+  background-position: center;
+}
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+  z-index: -1;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+.link {
+  color: #146ebe;
+  text-decoration: dotted;
+}
+.link:hover {
+  cursor: pointer;
+  color: #74c0fc;
+}
+main {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+/* -----PAGE-NOT-FOUND----- */
+.pageNotFoundContainer {
+  position: relative;
+  color: #183153;
+  text-align: center;
+}
+.pageNotFoundContainer .wrapper {
+  position: relative;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.heading {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #ff4041;
+  position: absolute;
+  top: -17px;
+  left: 50%;
+  font-size: 14px;
+  color: #fff;
+  transform: translateX(-50%);
+  text-transform: uppercase;
+}
+.mainText {
+  padding: 50px;
+  display: flex;
+  gap: 20px;
+}
+.mainText i {
+  color: #183153;
+  font-size: 10rem;
+}
+.subHeading {
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+.errorText {
+  text-align: center;
+  width: 70%;
+  font-size: 20px;
+  padding: 10px;
+}
+/* -----LOGIN-PAGE----- */
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+}
+.welcomeText {
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.welcomeText h1 {
+  color: #fab005;
+  font-size: 16px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.welcomeText span {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.inputContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-shadow: 0 0 0 2px #183153, 0 0 0 5px transparent;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 30px;
+}
+.inputContainer:focus-within {
+  box-shadow: 0 0 0 2px #183153, 0 0 0 2px #ccc, 0 0 0 5px #74c0fc;
+  border: 0;
+}
+.inputContainer i {
+  margin-right: 10px;
+  font-size: 20px;
+}
+.inputContainer input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+.loginOptions {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+}
+.loginOptions .separator {
+  height: 230px;
+}
+.loginContainer .formContainer {
+  display: flex;
+  flex-direction: column;
+}
+.formContainer button {
+  font-size: 18px;
+  font-weight: 600;
+  background: #ffd438;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 5px rgb(0, 0, 0);
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.formContainer button:hover {
+  background: #fab005;
+  cursor: pointer;
+}
+.forgotLink {
+  margin-bottom: 30px;
+}
+/* -----FORGOT-PASSWORD-PAGE----- */
+.forgotWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.forgotWrapper .welcomeText {
+  display: flex;
+  align-items: center;
+}
+.forgotText {
+  width: 70%;
+  text-align: center;
+}
+/* -----REGISTER-PAGE----- */
+.registerWrapper {
+  text-align: center;
+  padding: 0 20px;
+}
+.registerWrapper .welcomeText span {
+  margin-bottom: 0;
+}
+.registerContainer {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+}
+.separator {
+  width: 1px;
+  height: 400px;
+  background: #aaa;
+}
+.socialsRegister {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+}
+.socialsRegister button {
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.socialsRegister button:hover {
+  cursor: pointer;
+  background: rgb(225, 225, 225);
+}
+.socialsRegister button img {
+  width: 30px;
+  height: 30px;
+}
+.profileImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+.profileImage img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+.profileImage img:hover {
+  cursor: pointer;
+}
+/* -----USER-PROFILE-PAGE----- */
+.userProfileContainer {
+  background: #fff;
+  padding: 10px 40px;
+  border-radius: 10px;
+}
+.userProfileContainer .inputContainer {
+  margin-bottom: 0;
+}
+.userInformation {
+  text-align: center;
+}
+.userInformation h1 {
+  color: #183153;
+  font-size: 22px;
+  text-transform: none;
+  letter-spacing: 3px;
+}
+.userInformation .contactDetails {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.userInformation .bio {
+  width: 100%;
+}
+.btnContainer {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+.btnContainer .btn {
+  font-size: 18px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px rgb(0, 0, 0);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  user-select: none;
+}
+.btnContainer .updateBtn {
+  background: rgb(200, 150, 215);
+}
+.btnContainer .updateBtn:hover {
+  background: rgb(170, 110, 185);
+  cursor: pointer;
+}
+.btnContainer .logoutBtn {
+  background: rgb(255, 65, 65);
+}
+.btnContainer .logoutBtn:hover {
+  background: rgb(225, 35, 35);
+  cursor: pointer;
+}
+.btnContainer .saveBtn {
+  background: rgb(75, 240, 120);
+  margin: 0;
+}
+.btnContainer .saveBtn:hover {
+  background: rgb(45, 210, 90);
+  cursor: pointer;
+}
+.contactDetails .inputContainer {
+  height: 60px;
+  user-select: none;
+}
+/* -----ENTER-OTP-PAGE----- */
+.otpInputWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.otpInputWrapper .welcomeText {
+  width: 70%;
+  display: flex;
+  align-items: center;
+}
+.otpInputWrapper .welcomeText span {
+  font-size: 20px;
+}
+.otpInput {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.otpInputBox {
+  width: 70px;
+  height: 70px;
+  text-align: center;
+  font-size: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.resendSection {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 0;
+}
+.otpInputWrapper .formContainer .verifyBtn {
+  font-size: 18px;
+  font-weight: 600;
+  background: rgb(55, 70, 85);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px rgb(0, 0, 0);
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 2px solid #000;
+}
+.otpInputWrapper .formContainer .verifyBtn:hover {
+  background: rgb(85, 100, 115);
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  /* -----PAGE-NOT-FOUND RESPONSIVE----- */
+  .pageNotFoundContainer .wrapper {
+    padding: 10px;
+  }
+  .mainText {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  .mainText {
+    padding: 40px 50px 30px 50px;
+  }
+  .mainText i {
+    font-size: 5rem;
+  }
+  .subHeading {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  .errorText {
+    font-size: 14px;
+    padding: 0 20px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  /* -----FORGOT-PASSWORD-PAGE RESPONSIVE----- */
+  .forgotText {
+    width: 100%;
+  }
+  /* -----VERIFY-OTP-PAGE RESPONSIVE----- */
+  .otpInputWrapper {
+    width: 100%;
+  }
+  .otpInputWrapper .welcomeText {
+    width: 100%;
+  }
+  .otpInput {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .otpInputBox {
+    width: 35px;
+    height: 35px;
+    font-size: 22px;
+  }
+  .resendSection {
+    justify-content: center;
+  }
+  .otpInputWrapper .formContainer .verifyBtn {
+    width: 100%;
+  }
+  /* -----LOGIN-PAGE RESPONSIVE----- */
+  .loginWrapper .loginOptions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0px;
+  }
+  .loginWrapper .separator {
+    display: none;
+  }
+  .socialsRegister {
+    padding: 30px 0;
+  }
+  /* -----REGISTER-PAGE RESPONSIVE----- */
+  .registerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0px;
+  }
+  .registerContainer .separator {
+    display: none;
+  }
+  /* -----USER-PROFILE-PAGE RESPONSIVE----- */
+  .userInformation h1 {
+    font-size: 20px;
+    padding: 0 5px;
+  }
+}
