@@ -119,6 +119,7 @@ export const updateUser = async (req: Request, res: Response) => {
   } = req.body;
   const profilePicture = req.file?.path;
   let profileUrl = "";
+  let profilePublicId = "";
 
   if (profilePicture) {
     const result: UploadApiResponse = await cloudinary.uploader.upload(
@@ -128,6 +129,7 @@ export const updateUser = async (req: Request, res: Response) => {
       }
     );
     profileUrl = result.secure_url;
+    profilePublicId = result.public_id;
   }
 
   try {
@@ -165,12 +167,10 @@ export const updateUser = async (req: Request, res: Response) => {
             console.log("Photo Deleted Successfully");
           }
         });
+        user.publicId = profilePublicId;
       }
-      user.publicId = profileUrl;
     }
     await user.save();
-
-    // Delete the previous profilePicture after Saving the User
 
     return res.status(200).send("User Updated Successfully");
   } catch (error) {
