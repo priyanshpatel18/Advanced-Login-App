@@ -8,7 +8,7 @@ import './index.css';
 import React from 'react';
 
 // Setup axios defaults
-axios.defaults.baseURL = "https://login-app-backend-teal.vercel.app"
+axios.defaults.baseURL = "https://advanced-login-app-backend.vercel.app/"
 axios.defaults.withCredentials = true;
 
 const root = ReactDOM.createRoot(
