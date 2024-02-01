@@ -40,9 +40,6 @@ export default function LoginPage(): React.JSX.Element {
         enqueueSnackbar(err.response.data, {
           variant: "error",
         });
-        if (err.response.status === 401) {
-          redirect("/register");
-        }
       })
       .finally(() => {
         setIsLoggingIn(false)

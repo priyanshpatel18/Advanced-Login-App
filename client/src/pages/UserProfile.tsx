@@ -47,7 +47,7 @@ export default function UserProfile(): React.JSX.Element {
         setOriginalPhoneNumber(res.data.phoneNumber);
 
         setProfilePicture(res.data.profilePicture);
-        if (res.data.profilePicture !== `${axios.defaults.baseURL}/uploads/undefined`) {
+        if ((res.data.profilePicture).includes("cloudinary")) {
           setProfilePreview(res.data.profilePicture);
         }
       })
