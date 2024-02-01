@@ -167,8 +167,8 @@ export const updateUser = async (req: Request, res: Response) => {
             console.log("Photo Deleted Successfully");
           }
         });
-        user.publicId = profilePublicId;
       }
+      user.publicId = profilePublicId;
     }
     await user.save();
 
