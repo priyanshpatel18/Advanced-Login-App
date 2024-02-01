@@ -1,14 +1,15 @@
 // Basic Imports
-import MongoDBStore from "connect-mongodb-session";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import "dotenv/config";
 import express, { Express } from "express";
-import session from "express-session";
 import mongoose from "mongoose";
 import path from "path";
 // Router Imports
 import userRouter from "./routes/userRouter";
+// Session Management
+import MongoDBStore from "connect-mongodb-session";
+import session from "express-session";
 
 // Creating Backend Application
 const app: Express = express();
@@ -17,11 +18,12 @@ const app: Express = express();
 const MongoStore = MongoDBStore(session);
 
 // Creating a new MongoDBStore
-const store = new MongoStore({
+const store: MongoDBStore.MongoDBStore = new MongoStore({
   uri: process.env.DB_URL!,
   collection: "sessions",
 });
 
+// Middlewares
 app.use(
   session({
     secret: process.env.SECRET_KEY!,
@@ -35,7 +37,7 @@ app.use(
     },
   })
 );
-// Middlewares
+// Basic Middlewares
 app.use(
   cors({
     origin: "https://advanced-login-app.vercel.app",
