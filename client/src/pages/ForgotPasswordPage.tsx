@@ -27,9 +27,6 @@ export default function ForgotPasswordPage(): React.JSX.Element {
         enqueueSnackbar(err.response.data, {
           variant: "error"
         })
-        if (err.response.status === 401) {
-          redirect("/register")
-        }
         if (err.response.status === 402) {
           redirect("/login")
         }
