@@ -1,8 +1,10 @@
 // Basic Imports
+import MongoDBStore from "connect-mongodb-session";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import "dotenv/config";
 import express, { Express } from "express";
+import session from "express-session";
 import mongoose from "mongoose";
 import path from "path";
 // Router Imports
@@ -11,6 +13,28 @@ import userRouter from "./routes/userRouter";
 // Creating Backend Application
 const app: Express = express();
 
+// Initialize MongoDBStore using session
+const MongoStore = MongoDBStore(session);
+
+// Creating a new MongoDBStore
+const store = new MongoStore({
+  uri: process.env.DB_URL!,
+  collection: "sessions",
+});
+
+app.use(
+  session({
+    secret: process.env.SECRET_KEY!,
+    resave: false,
+    saveUninitialized: true,
+    store: store,
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      sameSite: "none",
+    },
+  })
+);
 // Middlewares
 app.use(
   cors({
