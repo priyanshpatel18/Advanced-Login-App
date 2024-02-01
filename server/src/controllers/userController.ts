@@ -155,7 +155,7 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 
     // Delete the previous profilePicture and then update profilePicture
-    if (profilePicture) {
+    if (user.publicId) {
       cloudinary.uploader.destroy(user.publicId, (error) => {
         if (error) {
           console.log(error);
@@ -245,11 +245,6 @@ export const sendMail = async (req: Request, res: Response) => {
   // Send Mail Via Transporter
   try {
     await transporter.sendMail(mailOptions);
-    res.cookie("connect.sid", req.sessionID, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-    });
     res.status(200).send("OTP sent successfully");
   } catch (error) {
     console.log(error);
@@ -333,7 +328,6 @@ export const resetPassword = async (req: Request, res: Response) => {
           secure: true,
           sameSite: "none",
         });
-
         res.status(200).send("Password Updated Successfully");
       });
     });
