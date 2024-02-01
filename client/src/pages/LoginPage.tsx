@@ -24,7 +24,7 @@ export default function LoginPage(): React.JSX.Element {
     setIsLoggingIn(true)
 
     const formData: LoginCredentials = {
-      userNameOrEmail: userNameOrEmail,
+      userNameOrEmail: userNameOrEmail.toLowerCase(),
       password: password
     }
 
