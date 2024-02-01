@@ -10,17 +10,6 @@ export default function EnterOtpPage(): React.JSX.Element {
   const { enqueueSnackbar } = useSnackbar();
   const redirect: NavigateFunction = useNavigate()
   const [email, setEmail] = useState<string>("");
-  
-  useEffect(() => {
-    axios.get("/user/getEmail")
-      .then((res) => {
-        console.log(res.data.email);
-        setEmail(res.data.email)
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  }, []);
 
   function handleResendOtp(): void {
     setTimer(60)
@@ -67,6 +56,14 @@ export default function EnterOtpPage(): React.JSX.Element {
 
   function handleVerify(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
+
+    axios.get("/user/getEmail")
+      .then((res) => {
+        setEmail(res.data.email)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
 
     axios.post("/user/verifyOtp", { inputOtp: inputOtp })
       .then((res) => {

@@ -9,6 +9,7 @@ import path from "path";
 import User, { UserDocument } from "../models/userModel";
 import { setToken } from "../service/auth";
 import cloudinary from "../utils/cloudinary";
+import { storeInstance } from "../middlewares/session";
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
@@ -242,9 +243,13 @@ export const sendMail = async (req: Request, res: Response) => {
   };
 
   // Send Mail Via Transporter
-  await transporter.sendMail(mailOptions);
-
-  res.status(200).send("OTP sent successfully");
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).send("OTP sent successfully");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
 };
 
 export const verifyOtp = (req: Request, res: Response) => {
@@ -270,8 +275,12 @@ export const getEmail = (req: Request, res: Response) => {
   const { email } = req.session;
 
   try {
+    if (!req.session || !req.session.email) {
+      return res.status(401).send("Session data not found");
+    }
+
     if (!email) {
-      res.send(401).send("Error Fetching Email");
+      return res.send(401).send("Error Fetching Email");
     }
 
     res.status(200).json({ email });
@@ -283,10 +292,12 @@ export const getEmail = (req: Request, res: Response) => {
 
 export const resetPassword = async (req: Request, res: Response) => {
   const { newPassword } = req.body;
-  const { email } = req.session;
+  const sessionId = req.sessionID;
 
   try {
-    const user: UserDocument | null = await User.findOne({ email });
+    const user: UserDocument | null = await User.findOne({
+      email: req.session.email,
+    });
 
     // Check for Invalid User
     if (!user) {
@@ -299,7 +310,28 @@ export const resetPassword = async (req: Request, res: Response) => {
     // Save the password in the database
     await user.save();
 
-    return res.status(200).send("Password Updated Successfully");
+    // Destroy Session
+    req.session.destroy((err) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Error destroying session");
+      }
+
+      // Delete session from MongoDB database using storeInstance
+      storeInstance.destroy(sessionId, (err) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).send("Error deleting session from database");
+        }
+        res.clearCookie("connect.sid", {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+        });
+
+        res.status(200).send("Password Updated Successfully");
+      });
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal server error");
