@@ -155,15 +155,18 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 
     // Delete the previous profilePicture and then update profilePicture
-    if (user.publicId) {
-      cloudinary.uploader.destroy(user.publicId, (error) => {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("Photo Deleted Successfully");
-        }
-      });
+    if (profilePicture) {
       user.profilePicture = profileUrl;
+      if (user.publicId.includes("uploads")) {
+        cloudinary.uploader.destroy(user.publicId, (error) => {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log("Photo Deleted Successfully");
+          }
+        });
+      }
+      user.publicId = profileUrl;
     }
     await user.save();
 
