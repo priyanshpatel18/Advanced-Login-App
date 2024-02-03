@@ -16,7 +16,7 @@ const sessionMiddleware = (req: Request, res: Response, next: NextFunction) => {
     saveUninitialized: true,
     store: storeInstance,
     cookie: {
-      maxAge: 5 * 60 * 1000,
+      maxAge: 10 * 1000,
       secure: true,
       httpOnly: true,
       sameSite: "none",
