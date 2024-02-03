@@ -78,8 +78,8 @@ export default function UserProfile(): React.JSX.Element {
     }
 
     const formData: FormData = new FormData();
-    formData.append("email", email);
-    formData.append("userName", userName);
+    formData.append("email", email.toLowerCase());
+    formData.append("userName", userName.toLowerCase());
     formData.append("originalUserName", originalUserName);
     formData.append("phoneNumber", phoneNumber);
     formData.append("originalPhoneNumber", originalPhoneNumber);
