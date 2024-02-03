@@ -259,6 +259,11 @@ export const verifyOtp = (req: Request, res: Response) => {
   const { inputOtp } = req.body;
   const { otp, email } = req.session;
 
+  if (!otp || !email) {
+    res.status(401).send("Session Data not Found");
+    return;
+  }
+
   // Verify OTP
   try {
     if (inputOtp !== otp) {
@@ -326,11 +331,7 @@ export const resetPassword = async (req: Request, res: Response) => {
           console.log(err);
           return res.status(500).send("Error deleting session from database");
         }
-        res.clearCookie("connect.sid", {
-          httpOnly: true,
-          secure: true,
-          sameSite: "none",
-        });
+        res.clearCookie("connect.sid");
         res.status(200).send("Password Updated Successfully");
       });
     });

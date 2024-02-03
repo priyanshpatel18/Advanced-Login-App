@@ -16,9 +16,9 @@ const sessionMiddleware = (req: Request, res: Response, next: NextFunction) => {
     saveUninitialized: true,
     store: storeInstance,
     cookie: {
-      secure: true,
+      secure: false,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "strict",
     },
   })(req, res, next);
 };
