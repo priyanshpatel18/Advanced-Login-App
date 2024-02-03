@@ -267,7 +267,7 @@ export const verifyOtp = (req: Request, res: Response) => {
   // Verify OTP
   try {
     if (inputOtp !== otp) {
-      res.status(401).send("Incorrect OTP");
+      res.status(401).json({});
       return;
     }
 
