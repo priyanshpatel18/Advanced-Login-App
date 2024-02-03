@@ -261,24 +261,17 @@ export const verifyOtp = (req: Request, res: Response) => {
   const { inputOtp } = req.body;
   const { otp, email } = req.session;
 
-  if (!otp || !email) {
-    res.status(401).send("Session Data not Found");
-    return;
-  }
-
   // Verify OTP
   try {
     if (inputOtp !== otp) {
-      res.status(401).json({});
+      res.status(401).send("Incorrect OTP");
       return;
     }
 
     deleteSession(req, res);
     res.clearCookie("connect.sid");
-    res.status(200).json({ email: email, message: "Change your Password" });
+    res.status(200).json({ email: email });
   } catch (error) {
-    deleteSession(req, res);
-    res.clearCookie("connect.sid");
     console.log(error);
     res.status(500).send("Internal server error");
   }
