@@ -36,7 +36,7 @@ app.use("/user", mailRouter);
 
 // Session Cleanup
 cron.schedule(
-  "*/30 * * * * *",
+  "0 * * * *",
   async () => {
     console.log("Running session cleanup job...");
     try {
