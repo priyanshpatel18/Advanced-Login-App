@@ -9,7 +9,7 @@ import path from "path";
 import User, { UserDocument } from "../models/userModel";
 import { setToken } from "../service/auth";
 import cloudinary from "../utils/cloudinary";
-import { storeInstance } from "../middlewares/session";
+import { deleteSession } from "../utils/sessionUtils";
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
@@ -380,27 +380,6 @@ export const googleLogin = async (req: Request, res: Response) => {
     sameSite: "none",
   });
   res.status(201).send("Login Successfully");
-};
-
-const deleteSession = async (req: Request, res: Response) => {
-  const sessionId = req.sessionID;
-
-  // Destroy Session
-  req.session.destroy((err) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).send("Error destroying session");
-    }
-
-    // Delete session from MongoDB database using storeInstance
-    storeInstance.destroy(sessionId, (err) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).send("Error deleting session from database");
-      }
-      console.log("Session deleted from database");
-    });
-  });
 };
 
 export const sendEmailVerificationMail = async (
