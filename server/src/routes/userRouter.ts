@@ -8,6 +8,11 @@ const mailRouter: Router = Router();
 
 mailRouter.use(sessionMiddleware);
 mailRouter
+  .post(
+    "/register",
+    upload.single("profilePicture"),
+    userController.registerUser
+  )
   .post("/sendMail", userController.sendMail)
   .post("/sendVerificationMail", userController.sendEmailVerificationMail)
   .post("/verifyOtp", userController.verifyOtp)
@@ -17,11 +22,6 @@ mailRouter
 userRouter
   .get("/", allowOnlyLoggedInUser, userController.getUser)
   .post("/login", userController.loginUser)
-  .post(
-    "/register",
-    upload.single("profilePicture"),
-    userController.registerUser
-  )
   .post("/logout", userController.logoutUser)
   .put("/update", upload.single("profilePicture"), userController.updateUser)
   .post("/googleRegister", userController.googleRegister)
