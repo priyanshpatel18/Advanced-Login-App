@@ -324,7 +324,7 @@ export const resetPassword = async (req: Request, res: Response) => {
         console.log(err);
         return res.status(500).send("Error destroying session");
       }
-
+      
       // Delete session from MongoDB database using storeInstance
       storeInstance.destroy(sessionId, (err) => {
         if (err) {
