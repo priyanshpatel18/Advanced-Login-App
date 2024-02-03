@@ -11,7 +11,7 @@ import { mailRouter, userRouter } from "./routes/userRouter";
 // Creating Backend Application
 const app: Express = express();
 
-app.set("trust proxy", true);
+// app.set("trust proxy", true);
 
 // Middlewares
 app.use(
