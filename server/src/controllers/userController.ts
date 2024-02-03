@@ -306,7 +306,6 @@ export const getEmail = (req: Request, res: Response) => {
 
 export const resetPassword = async (req: Request, res: Response) => {
   const { newPassword } = req.body;
-  const sessionId = req.sessionID;
 
   try {
     const user: UserDocument | null = await User.findOne({
@@ -443,7 +442,10 @@ export const sendEmailVerificationMail = async (
     });
 
   // Render EJS Template
-  const templatePath: string = path.resolve("./views/mailFormat.ejs");
+  const templatePath: string = path.resolve(
+    __dirname,
+    "../views/mailFormat.ejs"
+  );
   const htmlContent: string = await ejs.renderFile(templatePath, { otp });
 
   // Send Email
