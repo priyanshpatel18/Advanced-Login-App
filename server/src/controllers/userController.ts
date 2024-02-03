@@ -399,8 +399,6 @@ const deleteSession = async (req: Request, res: Response) => {
         return res.status(500).send("Error deleting session from database");
       }
       console.log("Session deleted from database");
-      res.clearCookie("connect.sid");
-      res.status(200).send("Password Updated Successfully");
     });
   });
 };
