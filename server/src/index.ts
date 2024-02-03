@@ -5,8 +5,10 @@ import "dotenv/config";
 import express, { Express } from "express";
 import mongoose from "mongoose";
 import path from "path";
-// Router Imports
+import cron from "node-cron";
+// File Imports
 import { mailRouter, userRouter } from "./routes/userRouter";
+import { clearExpiredSessions } from "./utils/sessionUtils";
 
 // Creating Backend Application
 const app: Express = express();
@@ -16,7 +18,7 @@ app.set("trust proxy", true);
 // Middlewares
 app.use(
   cors({
-    origin: "https://advanced-login-app.vercel.app",
+    origin: ["https://advanced-login-app.vercel.app", "http:localhost:8080"],
     methods: ["GET", "POST", "PUT"],
     credentials: true,
   })
@@ -31,6 +33,24 @@ app.set("views", path.resolve("./views"));
 app.use("/uploads", express.static("uploads"));
 app.use("/user", userRouter);
 app.use("/user", mailRouter);
+
+// Session Cleanup
+cron.schedule(
+  "*/30 * * * * *",
+  async () => {
+    console.log("Running session cleanup job...");
+    try {
+      await clearExpiredSessions();
+      console.log("Session cleanup completed.");
+    } catch (error) {
+      console.error("Error during session cleanup:", error);
+    }
+  },
+  {
+    scheduled: true,
+    timezone: "Asia/Kolkata",
+  }
+);
 
 // DB Connection
 const PORT: number = 8080 | Number(process.env.PORT);
