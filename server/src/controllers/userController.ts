@@ -250,6 +250,8 @@ export const sendMail = async (req: Request, res: Response) => {
     await transporter.sendMail(mailOptions);
     res.status(200).send("OTP sent successfully");
   } catch (error) {
+    deleteSession(req, res);
+    res.clearCookie("connect.sid");
     console.log(error);
     res.status(500).send("Internal Server Error");
   }
@@ -271,8 +273,12 @@ export const verifyOtp = (req: Request, res: Response) => {
       return;
     }
 
+    deleteSession(req, res);
+    res.clearCookie("connect.sid");
     res.status(200).json({ email: email, message: "Change your Password" });
   } catch (error) {
+    deleteSession(req, res);
+    res.clearCookie("connect.sid");
     console.log(error);
     res.status(500).send("Internal server error");
   }
@@ -318,23 +324,9 @@ export const resetPassword = async (req: Request, res: Response) => {
     // Save the password in the database
     await user.save();
 
-    // Destroy Session
-    req.session.destroy((err) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).send("Error destroying session");
-      }
-      
-      // Delete session from MongoDB database using storeInstance
-      storeInstance.destroy(sessionId, (err) => {
-        if (err) {
-          console.log(err);
-          return res.status(500).send("Error deleting session from database");
-        }
-        res.clearCookie("connect.sid");
-        res.status(200).send("Password Updated Successfully");
-      });
-    });
+    deleteSession(req, res);
+    res.clearCookie("connect.sid");
+    res.status(200).send("Password Updated Successfully");
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal server error");
@@ -395,4 +387,80 @@ export const googleLogin = async (req: Request, res: Response) => {
     sameSite: "none",
   });
   res.status(201).send("Login Successfully");
+};
+
+const deleteSession = async (req: Request, res: Response) => {
+  const sessionId = req.sessionID;
+
+  // Destroy Session
+  req.session.destroy((err) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Error destroying session");
+    }
+
+    // Delete session from MongoDB database using storeInstance
+    storeInstance.destroy(sessionId, (err) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Error deleting session from database");
+      }
+      console.log("Session deleted from database");
+      res.clearCookie("connect.sid");
+      res.status(200).send("Password Updated Successfully");
+    });
+  });
+};
+
+export const sendEmailVerificationMail = async (
+  req: Request,
+  res: Response
+) => {
+  const { email } = req.body;
+
+  // Set Email in the session
+  req.session.email = email;
+
+  // Generate OTP and set it in the session
+  const otp: string = otpGenerator.generate(6, {
+    lowerCaseAlphabets: false,
+    upperCaseAlphabets: false,
+    specialChars: false,
+  });
+  req.session.otp = otp;
+
+  // Configure Transporter
+  const transporter: nodemailer.Transporter<SMTPTransport.SentMessageInfo> =
+    nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.USER,
+        pass: process.env.PASS,
+      },
+    });
+
+  // Render EJS Template
+  const templatePath: string = path.resolve("./views/mailFormat.ejs");
+  const htmlContent: string = await ejs.renderFile(templatePath, { otp });
+
+  // Send Email
+  const mailOptions = {
+    from: String(process.env.USER),
+    to: email,
+    subject: "Email Verification",
+    html: htmlContent,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: "OTP sent successfully" });
+  } catch (error) {
+    deleteSession(req, res);
+    res.clearCookie("connect.sid");
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
 };

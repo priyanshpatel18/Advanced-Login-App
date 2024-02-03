@@ -9,6 +9,7 @@ const mailRouter: Router = Router();
 mailRouter.use(sessionMiddleware);
 mailRouter
   .post("/sendMail", userController.sendMail)
+  .post("/sendVerificationMail", userController.sendEmailVerificationMail)
   .post("/verifyOtp", userController.verifyOtp)
   .get("/getEmail", userController.getEmail)
   .post("/resetPassword", userController.resetPassword);

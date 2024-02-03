@@ -2,9 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import GoogleRegister from '../components/RegisterGoogle';
 import RegisterForm from '../components/RegisterForm';
+import { Form } from '../App';
 
-export default function RegisterPage(): React.JSX.Element {
+type propsType = {
+  setFormData: React.Dispatch<React.SetStateAction<Form | undefined>>
+}
 
+export default function RegisterPage({ setFormData }: propsType): React.JSX.Element {
   return (
     <div className="loginContainer">
       <div className="registerWrapper">
@@ -14,7 +18,7 @@ export default function RegisterPage(): React.JSX.Element {
         </div>
 
         <div className="registerContainer">
-          <RegisterForm />
+          <RegisterForm setFormData={setFormData} />
           <div className="separator"></div>
           <GoogleRegister />
         </div>

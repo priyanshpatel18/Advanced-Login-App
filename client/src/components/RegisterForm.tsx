@@ -5,8 +5,13 @@ import { NavigateFunction, useNavigate } from 'react-router-dom';
 import Button from './Button';
 import Input from './Input';
 import ProfileRegister from './RegisterProfile';
+import { Form } from '../App';
 
-export default function RegisterForm(): React.JSX.Element {
+type propsType = {
+  setFormData: React.Dispatch<React.SetStateAction<Form | undefined>>;
+};
+
+export default function RegisterForm({ setFormData }: propsType): React.JSX.Element {
   const [email, setEmail] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -22,28 +27,27 @@ export default function RegisterForm(): React.JSX.Element {
     e.preventDefault();
     setIsRegistering(true)
 
-    const formData: FormData = new FormData();
-    formData.append("userName", userName.toLowerCase())
-    formData.append("email", email)
-    formData.append("password", password)
-    formData.append("phoneNumber", "");
-    if (profilePicture) {
-      formData.append("profilePicture", profilePicture);
-    }
+    const newFormData: Form = {
+      userName,
+      email,
+      password,
+      profilePicture: profilePicture,
+      phoneNumber: ""
+    };
+    setFormData(newFormData);
 
-    axios
-      .post("/user/register", formData)
+    axios.post("/user/sendVerificationMail", { email })
       .then((res) => {
-        redirect("/login")
-        enqueueSnackbar(res.data, {
-          variant: "success",
-        });
+        redirect("/verifyEmail")
+        enqueueSnackbar(res.data.message, {
+          variant: "success"
+        })
       })
       .catch((err) => {
-        enqueueSnackbar(err.response.data, { variant: "error" });
-      })
-      .finally(() => {
-        setIsRegistering(false)
+        console.log(err);
+        enqueueSnackbar(err.response.data, {
+          variant: "error"
+        })
       })
   }
 

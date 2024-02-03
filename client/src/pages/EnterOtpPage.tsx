@@ -1,15 +1,30 @@
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import React, { FormEvent, useEffect, useState } from 'react';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
+import { Form } from '../App';
 
-export default function EnterOtpPage(): React.JSX.Element {
+type propsType = {
+  formData?: Form | undefined;
+}
+
+export default function EnterOtpPage({ formData }: propsType): React.JSX.Element {
   const [inputOtp, setInputOtp] = useState<string>('');
   const [timer, setTimer] = useState<number>(60);
   const refs: React.RefObject<HTMLInputElement>[] = Array.from({ length: 6 }).map(() => React.createRef());
   const { enqueueSnackbar } = useSnackbar();
   const redirect: NavigateFunction = useNavigate()
   const [email, setEmail] = useState<string>("");
+
+  const location = useLocation();
+  const [lastRoute, setLastRoute] = useState<string>("");
+
+
+  useEffect(() => {
+    if (location.pathname === '/password/verifyOtp' || location.pathname === '/verifyEmail') {
+      setLastRoute(location.pathname);
+    }
+  }, [location.pathname]);
 
   function handleResendOtp(): void {
     setTimer(60)
@@ -57,21 +72,29 @@ export default function EnterOtpPage(): React.JSX.Element {
   function handleVerify(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
 
-    axios.get("/user/getEmail")
-      .then((res) => {
-        setEmail(res.data.email)
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-
     axios.post("/user/verifyOtp", { inputOtp: inputOtp })
       .then((res) => {
         setEmail(res.data.email);
-        redirect("/password/reset");
-        enqueueSnackbar(res.data.message, {
-          variant: "info"
-        });
+
+        if (lastRoute === '/verifyEmail') {
+          axios
+            .post("/user/register", formData)
+            .then((res) => {
+              redirect("/login")
+              console.log("User Registered Successfully");
+              enqueueSnackbar(res.data, {
+                variant: "success",
+              });
+            })
+            .catch((err) => {
+              enqueueSnackbar(err.response.data, { variant: "error" });
+            })
+        } else if (lastRoute === '/password/verifyOtp') {
+          redirect('/password/reset');
+          enqueueSnackbar("Change your Password", {
+            variant: "info"
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
