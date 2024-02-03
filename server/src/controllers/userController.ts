@@ -49,6 +49,9 @@ export const registerUser = async (req: Request, res: Response) => {
       publicId,
       password,
     });
+
+    deleteSession(req, res);
+    res.clearCookie("connect.sid");
     res.status(200).send("User registered successfully");
   } catch (error) {
     console.error(error);
@@ -268,8 +271,6 @@ export const verifyOtp = (req: Request, res: Response) => {
       return;
     }
 
-    deleteSession(req, res);
-    res.clearCookie("connect.sid");
     res.status(200).json({ email: email });
   } catch (error) {
     console.log(error);
